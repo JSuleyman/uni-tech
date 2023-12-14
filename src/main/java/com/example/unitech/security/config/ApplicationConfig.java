@@ -1,6 +1,6 @@
 package com.example.unitech.security.config;
 
-import com.example.unitech.security.custom_exception.NotFoundUser;
+import com.example.unitech.security.custom_exception.InvalidPinException;
 import com.example.unitech.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username -> repository
                 .findByPin(username)
-                .orElseThrow(NotFoundUser::new);
+                .orElseThrow(InvalidPinException::new);
     }
 
     @Bean

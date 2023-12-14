@@ -1,7 +1,7 @@
 package com.example.unitech.security.filter;
 
 import com.example.unitech.security.entity.User;
-import com.example.unitech.security.custom_exception.NotFoundUser;
+import com.example.unitech.security.custom_exception.InvalidPinException;
 import com.example.unitech.security.repository.UserRepository;
 import com.example.unitech.security.service.JwtService;
 import com.example.unitech.security.repository.TokenRepository;
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                User user = userRepository.findByPin(userPin).orElseThrow(NotFoundUser::new);
+                User user = userRepository.findByPin(userPin).orElseThrow(InvalidPinException::new);
                 sessionManager.setCurrentUserId(user.getId());
             }
         }

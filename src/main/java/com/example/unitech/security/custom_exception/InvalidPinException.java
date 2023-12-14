@@ -2,10 +2,10 @@ package com.example.unitech.security.custom_exception;
 
 import com.example.unitech.utility.exception.CoreException;
 
-public class NotFoundUser extends CoreException {
-    final String statusCode = "unitech-20145";
+public class InvalidPinException extends CoreException {
+    final String statusCode = "test-2";
 
-    public NotFoundUser() {
+    public InvalidPinException() {
         super();
     }
 

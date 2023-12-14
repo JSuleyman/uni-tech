@@ -7,9 +7,9 @@ import com.example.unitech.security.entity.Token;
 import com.example.unitech.security.entity.User;
 import com.example.unitech.security.enums.Role;
 import com.example.unitech.security.enums.TokenType;
-import com.example.unitech.security.custom_exception.NotFoundUser;
+import com.example.unitech.security.custom_exception.InvalidPinException;
 import com.example.unitech.security.custom_exception.PinAlreadyExistsException;
-import com.example.unitech.security.custom_exception.WrongPassword;
+import com.example.unitech.security.custom_exception.InvalidPasswordException;
 import com.example.unitech.security.repository.TokenRepository;
 import com.example.unitech.security.repository.UserRepository;
 import lombok.AccessLevel;
@@ -50,11 +50,11 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequestDTO request) {
-        var userByEmail = repository.findByPin(request.getPin())
-                .orElseThrow(NotFoundUser::new);
+        var userByPin = repository.findByPin(request.getPin())
+                .orElseThrow(InvalidPinException::new);
 
-        if (!passwordEncoder.matches(request.getPassword(), userByEmail.getPassword())) {
-            throw new WrongPassword();
+        if (!passwordEncoder.matches(request.getPassword(), userByPin.getPassword())) {
+            throw new InvalidPasswordException();
         }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -62,11 +62,10 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = repository.findByPin(request.getPin())
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
+        var jwtToken = jwtService.generateToken(userByPin);
+        revokeAllUserTokens(userByPin);
+        saveUserToken(userByPin, jwtToken);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
