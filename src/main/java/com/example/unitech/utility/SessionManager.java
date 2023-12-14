@@ -16,7 +16,6 @@ public class SessionManager {
     static final String SEPERATOR = "__";
     public static final String DEFAULT_LANG = "AZ";
 
-    String userId;
     String currentUserId;
     String currentUserName;
     String currentThreadId;

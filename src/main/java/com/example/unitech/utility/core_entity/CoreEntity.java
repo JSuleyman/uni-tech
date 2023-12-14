@@ -22,7 +22,7 @@ public class CoreEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     String id;
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by")
     String createdBy;
     @Column(name = "created_time", nullable = false)
     Long createdTime;
