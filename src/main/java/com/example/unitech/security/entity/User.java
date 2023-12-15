@@ -1,5 +1,6 @@
 package com.example.unitech.security.entity;
 
+import com.example.unitech.entity.UserAccount;
 import com.example.unitech.security.enums.Role;
 import com.example.unitech.utility.core_entity.CoreEntity;
 import jakarta.persistence.*;
@@ -34,31 +35,10 @@ public class User extends CoreEntity implements UserDetails {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "user")
     List<Token> tokens;
-//
-//    @Getter(AccessLevel.NONE)
-//    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-//    private List<StarList> starLists;
-//
-//    @Getter(AccessLevel.NONE)
-//    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-//    private List<LikeBtn> likeList;
-//
-//
-//    @Getter(AccessLevel.NONE)
-//    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-//    List<UserComment> userComments;
-//
-//    @Getter(AccessLevel.NONE)
-//    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-//    List<UserCommentReply> userCommentReplies;
-//
-//    @Getter(value = AccessLevel.NONE)
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    List<UserEmailVerification> userEmailVerifications;
-//
-//    @Getter(value = AccessLevel.NONE)
-//    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-//    List<Expenses> expensesList;
+
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserAccount> userAccounts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

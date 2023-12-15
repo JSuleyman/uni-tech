@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @SuperBuilder
 @Table(name = "custom_exception")
-public class CustomException extends CoreEntity {
+public class CustomException extends CoreEntity { //TODO bunun oldugu foldere ad ver
 
     @Column(name = "error_code")
     String errorCode;
