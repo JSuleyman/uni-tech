@@ -42,6 +42,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/custom-exception/create")
                 .permitAll()
+                .requestMatchers("/exchange")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
