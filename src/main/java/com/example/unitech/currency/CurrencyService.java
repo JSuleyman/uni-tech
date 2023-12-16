@@ -6,6 +6,8 @@ import jakarta.xml.bind.Unmarshaller;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 
@@ -26,18 +29,10 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CurrencyService {
 
-    public List<CurrencyDTO> getValyutaData() {
-        LocalDate date = LocalDate.now();
-
-        if (date.getDayOfWeek().name().equals("SATURDAY")) {
-            date = date.minusDays(1);
-        } else if (date.getDayOfWeek().name().equals("SUNDAY")) {
-            date = date.minusDays(2);
-        }
-
-        String url = "https://www.cbar.az/currencies/" + date.format(DateTimeFormatter.ofPattern("dd.MM.YYYY")) + ".xml";
-        List<ExchangeType> valTypes = xmlToObject(url);
+    public String getValyutaData(CurrencyRequestDTO requestDTO) {
+        List<ExchangeType> valTypes = xmlToObject();
         List<ExchangeRate> exchanges = new ArrayList<>();
+
         valTypes.forEach(valType -> exchanges.addAll(valType.getValute()));
 
         List<CurrencyDTO> currencyDTOS = new ArrayList<>();
@@ -49,10 +44,53 @@ public class CurrencyService {
                     .build();
             currencyDTOS.add(currencyDTO);
         });
-        return currencyDTOS;
+
+        String fromValyuta = requestDTO.getFromValyuta(); //USD
+        String toValyuta = requestDTO.getToValyuta(); //EUR
+
+        if (fromValyuta.equals(toValyuta)) {
+            return fromValyuta + "/" + toValyuta + " = " + 1.0;
+        } else if (fromValyuta.equals("AZN")) {
+            Double deger = 1 / currencyDTOS.stream()
+                    .filter(currencyDTO -> currencyDTO.getValyutaQisaAd().equals(toValyuta))
+                    .map(currencyDTO -> Double.parseDouble(currencyDTO.getMezenne()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Valyuta tapılmadı"));
+            return fromValyuta + "/" + toValyuta + " = " + Math.round(deger * 100.0) / 100.0;
+        } else if (toValyuta.equals("AZN")) {
+            Double deger = currencyDTOS.stream()
+                    .filter(currencyDTO -> currencyDTO.getValyutaQisaAd().equals(fromValyuta))
+                    .map(currencyDTO -> Double.parseDouble(currencyDTO.getMezenne()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Valyuta tapılmadı"));
+            return fromValyuta + "/" + toValyuta + " = " + Math.round(deger * 100.0) / 100.0;
+        } else {
+            Double fromValyutaMezenne = currencyDTOS.stream()
+                    .filter(currencyDTO -> currencyDTO.getValyutaQisaAd().equals(fromValyuta))
+                    .map(currencyDTO -> Double.parseDouble(currencyDTO.getMezenne()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Valyuta tapılmadı")); //0.59
+            Double toValyutaMezenne = currencyDTOS.stream()
+                    .filter(currencyDTO -> currencyDTO.getValyutaQisaAd().equals(toValyuta))
+                    .map(currencyDTO -> Double.parseDouble(currencyDTO.getMezenne()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Valyuta tapılmadı")); //0.54
+            double deger = fromValyutaMezenne / toValyutaMezenne;
+            return fromValyuta + "/" + toValyuta + " = " + Math.round(deger * 100.0) / 100.0;
+        }
     }
 
-    private List<ExchangeType> xmlToObject(String url) {
+    @Scheduled(cron = "0 * * ? * *")
+    private List<ExchangeType> xmlToObject() {
+        LocalDate date = LocalDate.now();
+
+        if (date.getDayOfWeek().name().equals("SATURDAY")) {
+            date = date.minusDays(1);
+        } else if (date.getDayOfWeek().name().equals("SUNDAY")) {
+            date = date.minusDays(2);
+        }
+
+        String url = "https://www.cbar.az/currencies/" + date.format(DateTimeFormatter.ofPattern("dd.MM.YYYY")) + ".xml";
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -67,11 +105,11 @@ public class CurrencyService {
                 JAXBContext jaxbContext = JAXBContext.newInstance(ExchangeCours.class);
                 Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
                 ExchangeCours valCurs = (ExchangeCours) unmarshaller.unmarshal(responseBody);
+
                 return valCurs.getValTypes()
                         .stream()
-                        .filter(valType -> valType.getValType().equals("Xarici valyutalar")) // Örnek bir işaretleyici alan üzerinden filtreleme
+                        .filter(valType -> valType.getValType().equals("Xarici valyutalar"))
                         .collect(Collectors.toList());
-
             } else {
                 System.out.println("HTTP isteği başarısız oldu. Hata kodu: " + response.statusCode());
             }
@@ -80,7 +118,6 @@ public class CurrencyService {
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
-
         return null;
     }
 }
