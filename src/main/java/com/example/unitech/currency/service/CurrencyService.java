@@ -100,7 +100,7 @@ public class CurrencyService {
                 .filter(currencyDTO -> currencyDTO.getCurrencyCode().equals(currencyCode))
                 .map(currencyDTO -> Double.parseDouble(currencyDTO.getRate()))
                 .findFirst()
-                .orElseThrow(CurrencyNotFoundException::new); //TODO test ele
+                .orElseThrow(CurrencyNotFoundException::new);
     }
 
     private LocalDate adjustDateForWeekend(LocalDate date) {

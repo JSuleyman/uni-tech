@@ -94,7 +94,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testAuthenticateWhenUserIsSuccessfullyAuthenticatedThenReturnAuthenticationResponseWithToken() { //TODO fix this test
+    public void testAuthenticateWhenUserIsSuccessfullyAuthenticatedThenReturnAuthenticationResponseWithToken() {
         User existingUser = User.builder()
                 .pin(authenticationRequestDTO.getPin())
                 .password(authenticationRequestDTO.getPassword())
