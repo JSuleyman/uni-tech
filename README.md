@@ -6,31 +6,81 @@ This repository contains the backend APIs for UniTech, a fintech solution design
 
 ### 1. Register API
 
-#### Description
-Used to register for the UniTech application.
-
 #### Request
 http
 POST /auth/register
+
 {
-  "pin": "1234",
-  "password":"1234"
+  "pin": "",
+  "password":""
 }
 #### Unit Test - `testRegisterWhenNewUserThenSuccess`, `testRegisterWhenExistingUserThenPinAlreadyExistsException`
 
 ### 2. Login API
 
-#### Description
-Used to log in to UniTech account.
-
 #### Request
 http
 POST /auth/login
+
 {
-  "pin": "1234",
-  "password":"1234"
+  "pin": "",
+  "password":""
 }
 #### Unit Test - `testAuthenticateWhenUserIsSuccessfullyAuthenticatedThenReturnAuthenticationResponseWithToken`, `testAuthenticateWhenUserIsNotFoundThenThrowInvalidPinException`, `testAuthenticateWhenPasswordIsIncorrectThenThrowInvalidPasswordException`, `testAuthenticateWhenUserPinIsInvalidThenThrowInvalidPinException`, `testAuthenticateWhenUserPasswordIsInvalidThenThrowInvalidPasswordException`
+
+### 3. Get accounts API
+
+#### Request
+http
+GET /user-account
+
+#### Unit Test - `testGetActiveUserAccountsWhenActiveUserAccountsExistThenReturnUserAccountViewerResponseDTOs`, `testGetActiveUserAccountsWhenNoActiveUserAccountsExistThenReturnEmptyList`
+
+#### Request
+http
+POST /user-account
+
+{
+  "accountName":"",
+  "accountNumber":""
+}
+
+#### Unit Test - `testCreateUserAccountWhenAccountNumberExistsThenThrowDuplicateAccountNumberException`, `testCreateUserAccountWhenUserNotFoundThenThrowUserNotFoundException`, `testCreateUserAccountWhenAccountNumberNotExistsAndUserFoundThenSaveUserAccount`
+
+#### Request
+http
+POST /user-account/increment-balance
+
+{
+  "accountNumber": "",
+  "amount": 
+}
+
+#### Unit Test - `testIncrementBalanceWhenAmountAndAccountNumberAreValidThenReturnUpdatedBalance`, `testIncrementBalanceWhenAmountIsLessThanOrEqualToZeroThenThrowException`, `testIncrementBalanceWhenAmountIsGreaterThanOrEqualTo1000ThenThrowException`, `testIncrementBalanceWhenAccountNumberIsInvalidThenThrowException`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Technology Stack
 
