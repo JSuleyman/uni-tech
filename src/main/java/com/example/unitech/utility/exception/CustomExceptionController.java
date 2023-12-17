@@ -1,4 +1,4 @@
-package com.example.unitech.test;
+package com.example.unitech.utility.exception;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

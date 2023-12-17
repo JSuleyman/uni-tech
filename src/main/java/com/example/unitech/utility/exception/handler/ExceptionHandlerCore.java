@@ -1,6 +1,6 @@
-package com.example.unitech.utility.exception;
+package com.example.unitech.utility.exception.handler;
 
-import com.example.unitech.test.CustomExceptionReadService;
+import com.example.unitech.utility.exception.CustomExceptionReadService;
 import com.example.unitech.utility.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -39,7 +39,6 @@ public class ExceptionHandlerCore extends ResponseEntityExceptionHandler {
                                                 String messageCode,
                                                 String lang
     ) {
-
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         ResponseException responseException = ResponseException.builder()

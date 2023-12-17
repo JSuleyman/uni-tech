@@ -1,9 +1,9 @@
 package com.example.unitech.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class InvalidAccountNumberException extends CoreException {
-    final String statusCode = "test-6";
+    final String statusCode = "unitech-2006";
 
     public InvalidAccountNumberException() {
         super();

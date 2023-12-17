@@ -1,9 +1,9 @@
 package com.example.unitech.service;
 
 import com.example.unitech.custom_exception.InvalidAccountNumberException;
+import com.example.unitech.custom_exception.ValueOutOfRangeException;
 import com.example.unitech.dto.request.BalanceIncrementerRequestDTO;
 import com.example.unitech.entity.UserAccount;
-import com.example.unitech.enums.AccountStatus;
 import com.example.unitech.repository.UserAccountRepository;
 import com.example.unitech.utility.SessionManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserAccountBalanceIncrementerServiceTest { //TODO duzdumu deye yoxla
+class UserAccountBalanceIncrementerServiceTest {
 
     @Mock
     private UserAccountRepository userAccountRepository;
@@ -61,8 +61,7 @@ class UserAccountBalanceIncrementerServiceTest { //TODO duzdumu deye yoxla
         requestDTO.setAmount(0.0);
 
         assertThatThrownBy(() -> userAccountBalanceIncrementerService.incrementBalance(requestDTO))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("0 ile 1000 arasında bir değer giriniz.");
+                .isInstanceOf(ValueOutOfRangeException.class);
 
         verify(userAccountRepository, never()).findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any());
     }
@@ -73,8 +72,7 @@ class UserAccountBalanceIncrementerServiceTest { //TODO duzdumu deye yoxla
         requestDTO.setAmount(1000.0);
 
         assertThatThrownBy(() -> userAccountBalanceIncrementerService.incrementBalance(requestDTO))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("0 ile 1000 arasında bir değer giriniz.");
+                .isInstanceOf(ValueOutOfRangeException.class);
 
         verify(userAccountRepository, never()).findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any());
     }

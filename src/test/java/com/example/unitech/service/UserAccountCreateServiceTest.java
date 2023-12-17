@@ -22,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserAccountCreateServiceTest { //TODO duzdumu deye yoxla
-
+public class UserAccountCreateServiceTest {
     @Mock
     private UserAccountRepository userAccountRepository;
 

@@ -18,11 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserAccountTransferManagerServiceTest { //TODO hamisini duzelt
+public class UserAccountTransferManagerServiceTest { //TODO butun sertleri oduyurmu
 
     @Mock
     private UserAccountRepository userAccountRepository;
@@ -48,6 +49,9 @@ public class UserAccountTransferManagerServiceTest { //TODO hamisini duzelt
         toAccount.setAccountNumber(requestDTO.getToAccountNumber());
         toAccount.setAccountBalance(100.0);
         toAccount.setAccountStatus(AccountStatus.ACTIVE);
+
+        String currentUserId = "testUserId";
+        when(sessionManager.getCurrentUserId()).thenReturn(currentUserId);
     }
 
     @Test
@@ -94,9 +98,11 @@ public class UserAccountTransferManagerServiceTest { //TODO hamisini duzelt
 
     @Test
     public void testTransferMoneyWhenFromAndToAccountsAreSameThenThrowSameAccountTransferException() {
-        requestDTO.setToAccountNumber(requestDTO.getFromAccountNumber());
+        toAccount.setAccountNumber(fromAccount.getAccountNumber());
         when(userAccountRepository.findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any()))
                 .thenReturn(Optional.of(fromAccount));
+        when(userAccountRepository.findByUser_IdAndAccountNumber(anyString(), anyLong()))
+                .thenReturn(Optional.of(toAccount));
 
         assertThrows(SameAccountTransferException.class, () -> userAccountTransferManagerService.transferMoney(requestDTO));
     }

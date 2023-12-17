@@ -1,4 +1,4 @@
-package com.example.unitech.utility.exception;
+package com.example.unitech.utility.exception.handler;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

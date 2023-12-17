@@ -1,9 +1,9 @@
 package com.example.unitech.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class InsufficientBalanceException extends CoreException {
-    final String statusCode = "test-8";
+    final String statusCode = "unitech-2008";
 
     public InsufficientBalanceException() {
         super();

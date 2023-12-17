@@ -1,9 +1,9 @@
 package com.example.unitech.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class AccountNotFoundException extends CoreException {
-    final String statusCode = "test-10";
+    final String statusCode = "unitech-2010";
 
     public AccountNotFoundException() {
         super();

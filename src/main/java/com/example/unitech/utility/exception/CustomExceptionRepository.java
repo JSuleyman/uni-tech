@@ -1,8 +1,7 @@
-package com.example.unitech.test;
+package com.example.unitech.utility.exception;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

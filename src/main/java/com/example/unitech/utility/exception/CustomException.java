@@ -1,4 +1,4 @@
-package com.example.unitech.test;
+package com.example.unitech.utility.exception;
 
 import com.example.unitech.utility.core_entity.CoreEntity;
 import jakarta.persistence.Column;
@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @SuperBuilder
 @Table(name = "custom_exception")
-public class CustomException extends CoreEntity { //TODO bunun oldugu foldere ad ver
+public class CustomException extends CoreEntity {
 
     @Column(name = "error_code")
     String errorCode;

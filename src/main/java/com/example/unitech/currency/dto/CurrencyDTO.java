@@ -1,4 +1,4 @@
-package com.example.unitech.currency;
+package com.example.unitech.currency.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
 public class CurrencyDTO {
-    String mezenne;
-    String valyutaQisaAd;
-    String valyutaAd;
+    String currencyName;
+    String currencyCode;
+    String rate;
 }

@@ -1,4 +1,4 @@
-package com.example.unitech.currency;
+package com.example.unitech.currency.model;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;

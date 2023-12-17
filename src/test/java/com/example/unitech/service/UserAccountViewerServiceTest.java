@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserAccountViewerServiceTest { //TODO duzdumu deye yoxla
+public class UserAccountViewerServiceTest {
 
     @Mock
     private UserAccountRepository userAccountRepository;

@@ -1,4 +1,4 @@
-package com.example.unitech.test;
+package com.example.unitech.utility.exception;
 
 import com.example.unitech.utility.SessionManager;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,10 @@ public class CustomExceptionReadService {
     CustomExceptionRepository customExceptionRepository;
 
     public String getExceptionMessage(String exceptionCode, String lang) {
-
         lang = lang == null || lang.isBlank() ? sessionManager.DEFAULT_LANG : lang.toUpperCase(Locale.ROOT);
-
         return customExceptionRepository.findByErrorCodeAndLang(exceptionCode, lang)
                 .orElse(CustomException.builder()
                         .message("Exception code or language code not found")
                         .build()).getMessage();
-
     }
-
 }

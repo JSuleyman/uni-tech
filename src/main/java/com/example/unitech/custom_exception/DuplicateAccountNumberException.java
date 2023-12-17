@@ -1,9 +1,9 @@
 package com.example.unitech.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class DuplicateAccountNumberException extends CoreException {
-    final String statusCode = "test-4";
+    final String statusCode = "unitech-2004";
 
     public DuplicateAccountNumberException() {
         super();

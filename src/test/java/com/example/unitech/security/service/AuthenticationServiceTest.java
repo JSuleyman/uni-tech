@@ -8,6 +8,7 @@ import com.example.unitech.security.dto.request.RegisterRequestDTO;
 import com.example.unitech.security.dto.response.AuthenticationResponse;
 import com.example.unitech.security.entity.User;
 import com.example.unitech.security.enums.Role;
+import com.example.unitech.security.repository.TokenRepository;
 import com.example.unitech.security.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
@@ -33,6 +36,15 @@ public class AuthenticationServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private JwtService jwtService;
+
+    @Mock
+    private TokenRepository tokenRepository;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
 
     @InjectMocks
     private AuthenticationService authenticationService;
@@ -90,10 +102,16 @@ public class AuthenticationServiceTest {
                 .build();
         when(userRepository.findByPin(authenticationRequestDTO.getPin())).thenReturn(Optional.of(existingUser));
         when(passwordEncoder.matches(authenticationRequestDTO.getPassword(), existingUser.getPassword())).thenReturn(true);
+        when(authenticationManager.authenticate(any())).thenReturn(new UsernamePasswordAuthenticationToken(
+                authenticationRequestDTO.getPin(),
+                authenticationRequestDTO.getPassword()
+        ));
+        when(jwtService.generateToken(any())).thenReturn("testTokenValue");
 
         AuthenticationResponse response = authenticationService.authenticate(authenticationRequestDTO);
 
         assertThat(response.getToken()).isNotNull();
+        assertThat(response.getToken()).isEqualTo("testTokenValue");
     }
 
     @Test

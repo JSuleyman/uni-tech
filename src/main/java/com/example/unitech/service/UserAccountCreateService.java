@@ -27,7 +27,6 @@ public class UserAccountCreateService {
         if (userAccountRepository.existsByAccountNumber(createRequestDTO.getAccountNumber())) {
             throw new DuplicateAccountNumberException();
         }
-
         User user = userRepository
                 .findById(sessionManager.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);

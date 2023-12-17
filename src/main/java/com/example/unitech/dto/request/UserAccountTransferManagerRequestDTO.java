@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAccountTransferManagerRequestDTO { //TODO notnull ve notblanklari yoxla
+public class UserAccountTransferManagerRequestDTO {
     @NotNull(message = "From account number is required")
     Long fromAccountNumber;
     @NotNull(message = "To account number is required")

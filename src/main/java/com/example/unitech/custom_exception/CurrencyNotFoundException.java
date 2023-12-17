@@ -2,10 +2,10 @@ package com.example.unitech.custom_exception;
 
 import com.example.unitech.utility.exception.handler.CoreException;
 
-public class InactiveAccountTransferException extends CoreException {
-    final String statusCode = "unitech-2007";
+public class CurrencyNotFoundException extends CoreException {
+    final String statusCode = "unitech-2011";
 
-    public InactiveAccountTransferException() {
+    public CurrencyNotFoundException() {
         super();
     }
 

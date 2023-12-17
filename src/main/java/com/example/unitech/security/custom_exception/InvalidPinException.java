@@ -1,9 +1,9 @@
 package com.example.unitech.security.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class InvalidPinException extends CoreException {
-    final String statusCode = "test-2";
+    final String statusCode = "unitech-2002";
 
     public InvalidPinException() {
         super();

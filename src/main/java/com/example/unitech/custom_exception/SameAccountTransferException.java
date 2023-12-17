@@ -1,9 +1,9 @@
 package com.example.unitech.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class SameAccountTransferException extends CoreException {
-    final String statusCode = "test-9";
+    final String statusCode = "unitech-2009";
 
     public SameAccountTransferException() {
         super();

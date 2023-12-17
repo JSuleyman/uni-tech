@@ -1,9 +1,9 @@
 package com.example.unitech.security.custom_exception;
 
-import com.example.unitech.utility.exception.CoreException;
+import com.example.unitech.utility.exception.handler.CoreException;
 
 public class InvalidPasswordException extends CoreException {
-    final String statusCode = "test-3";
+    final String statusCode = "unitech-2003";
 
     public InvalidPasswordException() {
         super();

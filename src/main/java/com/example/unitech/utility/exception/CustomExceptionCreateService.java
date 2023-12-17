@@ -1,4 +1,4 @@
-package com.example.unitech.test;
+package com.example.unitech.utility.exception;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class CustomExceptionCreateService {
     CustomExceptionRepository customExceptionRepository;
 
-    //TODO uniqiyi yoxla
     public void addException(CustomExceptionCreateDTO dto) {
         dto.getMessagesAndLangs().forEach((lang, message) ->
                 customExceptionRepository.save(CustomException.builder()

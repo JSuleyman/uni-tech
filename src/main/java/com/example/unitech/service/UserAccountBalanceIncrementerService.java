@@ -1,6 +1,7 @@
 package com.example.unitech.service;
 
-import com.example.unitech.custom_exception.InvalidAccountNumberException;
+import com.example.unitech.custom_exception.AccountNotFoundException;
+import com.example.unitech.custom_exception.ValueOutOfRangeException;
 import com.example.unitech.dto.request.BalanceIncrementerRequestDTO;
 import com.example.unitech.entity.UserAccount;
 import com.example.unitech.enums.AccountStatus;
@@ -20,13 +21,13 @@ public class UserAccountBalanceIncrementerService {
 
     public Double incrementBalance(BalanceIncrementerRequestDTO requestDTO) {
         if (requestDTO.getAmount() <= 0.0 || requestDTO.getAmount() >= 1000.00) {
-            throw new RuntimeException("0 ile 1000 arasında bir değer giriniz."); //TODO exception atılmalı
+            throw new ValueOutOfRangeException();
         }
         UserAccount userAccount = userAccountRepository
                 .findByUser_IdAndAccountNumberAndAccountStatus(
                         sessionManager.getCurrentUserId(),
                         requestDTO.getAccountNumber(),
-                        AccountStatus.ACTIVE).orElseThrow(InvalidAccountNumberException::new); //TODO exception not fount olmalidi
+                        AccountStatus.ACTIVE).orElseThrow(AccountNotFoundException::new);
         userAccount.setAccountBalance(userAccount.getAccountBalance() + requestDTO.getAmount());
         userAccountRepository.save(userAccount);
         return userAccount.getAccountBalance();

@@ -1,4 +1,4 @@
-package com.example.unitech.currency;
+package com.example.unitech.currency.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
 public class CurrencyRequestDTO {
-    String fromValyuta;
-    String toValyuta;
+    String fromCurrency;
+    String toCurrency;
 }
