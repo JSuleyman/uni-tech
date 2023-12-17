@@ -58,7 +58,7 @@ public class UserAccountTransferManagerServiceTest { //TODO butun sertleri oduyu
     public void testTransferMoneyWhenTransferIsSuccessfulThenReturnFromAccountBalance() {
         when(userAccountRepository.findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any()))
                 .thenReturn(Optional.of(fromAccount));
-        when(userAccountRepository.findByUser_IdAndAccountNumber(anyString(), anyLong()))
+        when(userAccountRepository.findByAccountNumber(anyLong()))
                 .thenReturn(Optional.of(toAccount));
 
         Double result = userAccountTransferManagerService.transferMoney(requestDTO);
@@ -79,7 +79,7 @@ public class UserAccountTransferManagerServiceTest { //TODO butun sertleri oduyu
     public void testTransferMoneyWhenToAccountNotFoundThenThrowAccountNotFoundException() {
         when(userAccountRepository.findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any()))
                 .thenReturn(Optional.of(fromAccount));
-        when(userAccountRepository.findByUser_IdAndAccountNumber(anyString(), anyLong()))
+        when(userAccountRepository.findByAccountNumber(anyLong()))
                 .thenReturn(Optional.empty());
 
         assertThrows(AccountNotFoundException.class, () -> userAccountTransferManagerService.transferMoney(requestDTO));
@@ -90,7 +90,7 @@ public class UserAccountTransferManagerServiceTest { //TODO butun sertleri oduyu
         when(userAccountRepository.findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any()))
                 .thenReturn(Optional.of(fromAccount));
         toAccount.setAccountStatus(AccountStatus.DEACTIVE);
-        when(userAccountRepository.findByUser_IdAndAccountNumber(anyString(), anyLong()))
+        when(userAccountRepository.findByAccountNumber(anyLong()))
                 .thenReturn(Optional.of(toAccount));
 
         assertThrows(InactiveAccountTransferException.class, () -> userAccountTransferManagerService.transferMoney(requestDTO));
@@ -101,7 +101,7 @@ public class UserAccountTransferManagerServiceTest { //TODO butun sertleri oduyu
         toAccount.setAccountNumber(fromAccount.getAccountNumber());
         when(userAccountRepository.findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any()))
                 .thenReturn(Optional.of(fromAccount));
-        when(userAccountRepository.findByUser_IdAndAccountNumber(anyString(), anyLong()))
+        when(userAccountRepository.findByAccountNumber(anyLong()))
                 .thenReturn(Optional.of(toAccount));
 
         assertThrows(SameAccountTransferException.class, () -> userAccountTransferManagerService.transferMoney(requestDTO));
@@ -112,7 +112,7 @@ public class UserAccountTransferManagerServiceTest { //TODO butun sertleri oduyu
         fromAccount.setAccountBalance(50.0);
         when(userAccountRepository.findByUser_IdAndAccountNumberAndAccountStatus(anyString(), anyLong(), any()))
                 .thenReturn(Optional.of(fromAccount));
-        when(userAccountRepository.findByUser_IdAndAccountNumber(anyString(), anyLong()))
+        when(userAccountRepository.findByAccountNumber(anyLong()))
                 .thenReturn(Optional.of(toAccount));
 
         assertThrows(InsufficientBalanceException.class, () -> userAccountTransferManagerService.transferMoney(requestDTO));

@@ -45,10 +45,8 @@ public class UserAccountTransferManagerService {
 
     private UserAccount getUserAccountByAccountNumber(Long accountNumber) {
         return userAccountRepository
-                .findByUser_IdAndAccountNumber(
-                        sessionManager.getCurrentUserId(),
-                        accountNumber
-                ).orElseThrow(AccountNotFoundException::new);
+                .findByAccountNumber(accountNumber)
+                .orElseThrow(AccountNotFoundException::new);
     }
 
     private void validateTransferConditions(UserAccount fromAccount, UserAccount toAccount, double amount) {
